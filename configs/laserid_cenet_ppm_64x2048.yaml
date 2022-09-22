@@ -1,0 +1,146 @@
+# Date: August 28, 2022.
+# training parameters
+train:
+  pipeline: "res"       #  "res" "fid" "hard"
+  act: "Hardswish"      #  "SiLU" "Hardswish" “LeakyReLU”
+  loss: "xentropy"      #   must be either xentropy or iou
+  aux_loss: True
+  coef: 1.0             # coefficient for different losses.
+
+  epsilon_w: 0.001       # class weight w = 1 / (content + epsilon_w)
+  continue_to_train: False  # resume?
+
+  pretrained_model_path: None  # pretrained model.
+  save_last_model_path: "checkpoints/save_last_model.pt"
+  save_best_val_model_path: "checkpoints/save_best_val_model.pt"
+  save_best_train_model_path: "checkpoints/save_best_train_model.pt"
+  save_intime_model_path: "checkpoints/save_intime_"
+  save_loss_mIoU_path: "checkpoints/save_loss_miou.pkl"
+
+  train_batch_size: 3 # 8   # for single GPU. 7x7: 3; 5x5: 4; 3x3: 7?
+  val_batch_size: 2      # for single GPU.
+  train_num_workers: 8 # 8  # number of threads to get data
+  val_num_workers: 4     # number of threads to get data
+
+  max_iteration: None  # if max_epochs is not None, max_iteration will be None.
+  max_epoch: 100       # the number of epochs, default: 200.
+
+  # SGD Optimizer.
+  momentum: 0.9          # sgd momentum
+  w_decay: 0.0001        # weight decay
+  # Consine Scheduler.
+  scheduler: "consine"  # "consine" or "decay"
+  consine:
+    min_lr: 0.002 # Original: 0.0001
+    max_lr: 0.01
+    first_cycle: 30
+    cycle: 1
+    wup_epochs: 1
+    gamma: 1.0
+  decay:
+    lr: 0.01
+    wup_epochs: 1        # warmup during first XX epochs (can be float)
+    lr_decay: 0.99       # learning rate decay per epoch after initial cycle (from min lr)
+
+#  # AdamW Optimizer.
+  learning_rate: 0.002   # AdamW learning rate
+  weight_decay: 0.0001   # weight decay
+#  # WarmupPolyLrScheduler
+  warmup_iters: 1000
+  warmup_type: 'exp'
+  warmup_ratio: 0.1
+  warmup_power: 0.9
+  warmup_min_lr: 0.0
+
+# postproc parameters
+post:
+  KNN:
+    use: True # This parameter default is false
+#     params:
+#       knn: 5
+#       search: 5
+#       sigma: 1.0
+#       cutoff: 1.0
+    params:
+      knn: 3  # 7
+      search: 3  # 7
+      sigma: 1.0
+      cutoff: 2.0
+
+
+# dataset
+dataset:
+  labels: "kitti"
+  scans: "kitti"
+  max_points: 133376 # 64 x 2084 = 133376, max of any scan in dataset
+  num_classes: 19
+  data_config: 'libs/semantic_kitti_api/config/semantic-kitti.yaml'
+  sensor:
+    name: "HDL64"
+    type: "spherical" # projective
+    fov_up: 3
+    fov_down: -25
+    img_prop:
+      width: 2048
+      height: 64
+    img_means: #range,x,y,z,signal
+      - 11.7776484
+      - -0.09653383
+      - 0.50861589
+      - -1.06260399
+      - 0.27578161
+    img_stds: #range,x,y,z,signal
+      - 10.3212339
+      - 12.34690183
+      - 9.5214585
+      - 0.86002811
+      - 0.14894821
+#    img_means: #range,x,y,z,signal
+#      - 11.71279
+#      - -0.1023471
+#      - 0.4952
+#      - -1.0545
+#      - 0.2877
+#    img_stds: #range,x,y,z,signal
+#      - 10.24
+#      - 12.295865
+#      - 9.4287
+#      - 0.8643
+#      - 0.1450
+
+#  data_root: 'Datasets/SemanticKitti/dataset/sequences_laserid_range_images_2048'
+  data_root: 'Datasets/SemanticKitti/dataset/sequences'
+  num_train_samples: 23201 # train:19130, val: 4071, train+val: 23201, '00': 4541, '03': 801.
+  train_sequences:
+    - '00'
+    - '01'
+    - '02'
+    - '03'
+    - '04'
+    - '05'
+    - '06'
+    - '07'
+    - '09'
+    - '10'
+    - '08'
+  val_sequences:
+    - '08'
+  test_sequences:
+    - '11'
+    - '12'
+    - '13'
+    - '14'
+    - '15'
+    - '16'
+    - '17'
+    - '18'
+    - '19'
+    - '20'
+    - '21'
+
+# others.
+manual_seed: 123
+num_gpus: 4  # the number of GPUs used.
+port: 45321
+
+
