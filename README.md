@@ -21,15 +21,29 @@ CEPPMNet on the SemanticKITTI test dataset.
 
 ### How to use the code
 
+Download SemanticKITTI from the [official website](http://www.semantic-kitti.org/dataset.html). Then please revise the configuration file in the`configs/laserid_cenet_ppm_64x2048.yaml`.
 
+There are two methods to train and test the model. One is that we could use the tool `tools/save_range_images_other_info_lidar.py` to generate range images and other files in advance. Then we could adopt `data/semantic_kitti_range_image_data_constructor.py` to read data as inputs. The other is that we could directly utilize `data/semantic_kitti_range_image_data_constructorV1.py` to read raw point cloud to generate range images and other files as inputs. 
 
+#### Train
 
+`sh train.sh`
+
+#### Test
+
+`sh infer.sh`
+
+`python eval/eval_cenet_ppm_64x2048_official.py`
 
 ### Pretrained Model
 
-
-
-
+The pretrained model is put in the `checkpoints/save_best_val_model.pt`
 
 ### Acknowledgements
+
+Parts of code are derived from [CENet](https://github.com/huixiancheng/CENet) and [RangeNet++](https://github.com/PRBonn/lidar-bonnetal). Many thanks for their source code.
+
+### Citation
+
+I am preparing this ...
 
