@@ -39,6 +39,10 @@ There are two methods to train and test the model. One is that we could use the 
 
 The pretrained model is put in the `checkpoints/save_best_val_model.pt`
 
+![codalab](images/codalab.png)
+
+At present, the mIoU score is 63.3 on the SemanticKITTI test data with LaserID projection images. The size of range images is 64x2048. ([CodaLab](https://codalab.lisn.upsaclay.fr/competitions/6280#results). **Updated time**: September 11, 2022)
+
 ### Acknowledgements
 
 Parts of code are derived from [CENet](https://github.com/huixiancheng/CENet) and [RangeNet++](https://github.com/PRBonn/lidar-bonnetal). Many thanks for their source code.
