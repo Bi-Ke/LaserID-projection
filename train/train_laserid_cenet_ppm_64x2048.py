@@ -1,5 +1,5 @@
 """
-    Function: training CENet+PPM on Spherical Projected Range Images.
+    Function: training CENet+PPM on LaserID Projected Range Images.
 
     Date: August 29, 2022.
 """
